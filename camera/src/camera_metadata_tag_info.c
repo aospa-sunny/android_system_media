@@ -261,6 +261,10 @@ static tag_info_t android_control[ANDROID_CONTROL_END -
     { "aeRegionsSet",                  TYPE_BYTE   },
     [ ANDROID_CONTROL_AWB_REGIONS_SET - ANDROID_CONTROL_START ] =
     { "awbRegionsSet",                 TYPE_BYTE   },
+    [ ANDROID_CONTROL_SETTINGS_OVERRIDE - ANDROID_CONTROL_START ] =
+    { "settingsOverride",              TYPE_INT32  },
+    [ ANDROID_CONTROL_AVAILABLE_SETTINGS_OVERRIDES - ANDROID_CONTROL_START ] =
+    { "availableSettingsOverrides",    TYPE_INT32  },
 };
 
 static tag_info_t android_demosaic[ANDROID_DEMOSAIC_END -
@@ -467,6 +471,9 @@ static tag_info_t android_request[ANDROID_REQUEST_END -
                                         TYPE_INT64  },
     [ ANDROID_REQUEST_RECOMMENDED_TEN_BIT_DYNAMIC_RANGE_PROFILE - ANDROID_REQUEST_START ] =
     { "recommendedTenBitDynamicRangeProfile",
+                                        TYPE_INT64  },
+    [ ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP - ANDROID_REQUEST_START ] =
+    { "availableColorSpaceProfilesMap",
                                         TYPE_INT64  },
 };
 
@@ -1738,6 +1745,28 @@ int camera_metadata_enum_snprint(uint32_t tag,
             }
             break;
         }
+        case ANDROID_CONTROL_SETTINGS_OVERRIDE: {
+            switch (value) {
+                case ANDROID_CONTROL_SETTINGS_OVERRIDE_OFF:
+                    msg = "OFF";
+                    ret = 0;
+                    break;
+                case ANDROID_CONTROL_SETTINGS_OVERRIDE_ZOOM:
+                    msg = "ZOOM";
+                    ret = 0;
+                    break;
+                case ANDROID_CONTROL_SETTINGS_OVERRIDE_VENDOR_START:
+                    msg = "VENDOR_START";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
+            break;
+        }
+        case ANDROID_CONTROL_AVAILABLE_SETTINGS_OVERRIDES: {
+            break;
+        }
 
         case ANDROID_DEMOSAIC_MODE: {
             switch (value) {
@@ -2277,6 +2306,10 @@ int camera_metadata_enum_snprint(uint32_t tag,
                     msg = "STREAM_USE_CASE";
                     ret = 0;
                     break;
+                case ANDROID_REQUEST_AVAILABLE_CAPABILITIES_COLOR_SPACE_PROFILES:
+                    msg = "COLOR_SPACE_PROFILES";
+                    ret = 0;
+                    break;
                 default:
                     msg = "error: enum value out of range";
             }
@@ -2360,6 +2393,81 @@ int camera_metadata_enum_snprint(uint32_t tag,
             break;
         }
         case ANDROID_REQUEST_RECOMMENDED_TEN_BIT_DYNAMIC_RANGE_PROFILE: {
+            break;
+        }
+        case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP: {
+            switch (value) {
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_UNSPECIFIED:
+                    msg = "UNSPECIFIED";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SRGB:
+                    msg = "SRGB";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_SRGB:
+                    msg = "LINEAR_SRGB";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_EXTENDED_SRGB:
+                    msg = "EXTENDED_SRGB";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_EXTENDED_SRGB:
+                    msg = "LINEAR_EXTENDED_SRGB";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT709:
+                    msg = "BT709";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT2020:
+                    msg = "BT2020";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DCI_P3:
+                    msg = "DCI_P3";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DISPLAY_P3:
+                    msg = "DISPLAY_P3";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_NTSC_1953:
+                    msg = "NTSC_1953";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SMPTE_C:
+                    msg = "SMPTE_C";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ADOBE_RGB:
+                    msg = "ADOBE_RGB";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_PRO_PHOTO_RGB:
+                    msg = "PRO_PHOTO_RGB";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACES:
+                    msg = "ACES";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACESCG:
+                    msg = "ACESCG";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_XYZ:
+                    msg = "CIE_XYZ";
+                    ret = 0;
+                    break;
+                case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_LAB:
+                    msg = "CIE_LAB";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
             break;
         }
 
@@ -4681,6 +4789,30 @@ int camera_metadata_enum_value(uint32_t tag,
                 }
             break;
         }
+        case ANDROID_CONTROL_SETTINGS_OVERRIDE: {
+                enumName = "OFF";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_CONTROL_SETTINGS_OVERRIDE_OFF;
+                    ret = 0;
+                    break;
+                }
+                enumName = "ZOOM";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_CONTROL_SETTINGS_OVERRIDE_ZOOM;
+                    ret = 0;
+                    break;
+                }
+                enumName = "VENDOR_START";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_CONTROL_SETTINGS_OVERRIDE_VENDOR_START;
+                    ret = 0;
+                    break;
+                }
+            break;
+        }
+        case ANDROID_CONTROL_AVAILABLE_SETTINGS_OVERRIDES: {
+            break;
+        }
 
         case ANDROID_DEMOSAIC_MODE: {
                 enumName = "FAST";
@@ -5287,6 +5419,12 @@ int camera_metadata_enum_value(uint32_t tag,
                     ret = 0;
                     break;
                 }
+                enumName = "COLOR_SPACE_PROFILES";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_CAPABILITIES_COLOR_SPACE_PROFILES;
+                    ret = 0;
+                    break;
+                }
             break;
         }
         case ANDROID_REQUEST_AVAILABLE_REQUEST_KEYS: {
@@ -5389,6 +5527,111 @@ int camera_metadata_enum_value(uint32_t tag,
             break;
         }
         case ANDROID_REQUEST_RECOMMENDED_TEN_BIT_DYNAMIC_RANGE_PROFILE: {
+            break;
+        }
+        case ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP: {
+                enumName = "UNSPECIFIED";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_UNSPECIFIED;
+                    ret = 0;
+                    break;
+                }
+                enumName = "SRGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SRGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "LINEAR_SRGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_SRGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "EXTENDED_SRGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_EXTENDED_SRGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "LINEAR_EXTENDED_SRGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_EXTENDED_SRGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "BT709";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT709;
+                    ret = 0;
+                    break;
+                }
+                enumName = "BT2020";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT2020;
+                    ret = 0;
+                    break;
+                }
+                enumName = "DCI_P3";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DCI_P3;
+                    ret = 0;
+                    break;
+                }
+                enumName = "DISPLAY_P3";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DISPLAY_P3;
+                    ret = 0;
+                    break;
+                }
+                enumName = "NTSC_1953";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_NTSC_1953;
+                    ret = 0;
+                    break;
+                }
+                enumName = "SMPTE_C";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SMPTE_C;
+                    ret = 0;
+                    break;
+                }
+                enumName = "ADOBE_RGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ADOBE_RGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "PRO_PHOTO_RGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_PRO_PHOTO_RGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "ACES";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACES;
+                    ret = 0;
+                    break;
+                }
+                enumName = "ACESCG";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACESCG;
+                    ret = 0;
+                    break;
+                }
+                enumName = "CIE_XYZ";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_XYZ;
+                    ret = 0;
+                    break;
+                }
+                enumName = "CIE_LAB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_LAB;
+                    ret = 0;
+                    break;
+                }
             break;
         }
 

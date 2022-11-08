@@ -203,6 +203,8 @@
             ><a href="#controls_android.control.aeRegionsSet">android.control.aeRegionsSet</a></li>
             <li
             ><a href="#controls_android.control.awbRegionsSet">android.control.awbRegionsSet</a></li>
+            <li
+            ><a href="#controls_android.control.settingsOverride">android.control.settingsOverride</a></li>
           </ul>
         </li>
         <li>
@@ -258,6 +260,8 @@
             ><a href="#static_android.control.zoomRatioRange">android.control.zoomRatioRange</a></li>
             <li
             ><a href="#static_android.control.availableHighSpeedVideoConfigurationsMaximumResolution">android.control.availableHighSpeedVideoConfigurationsMaximumResolution</a></li>
+            <li
+            ><a href="#static_android.control.availableSettingsOverrides">android.control.availableSettingsOverrides</a></li>
           </ul>
         </li>
         <li>
@@ -321,6 +325,8 @@
             ><a href="#dynamic_android.control.extendedSceneMode">android.control.extendedSceneMode</a></li>
             <li
             ><a href="#dynamic_android.control.zoomRatio">android.control.zoomRatio</a></li>
+            <li
+            ><a href="#dynamic_android.control.settingsOverride">android.control.settingsOverride</a></li>
           </ul>
         </li>
       </ul> <!-- toc_section -->
@@ -711,6 +717,10 @@
             ><a href="#static_android.request.availableDynamicRangeProfilesMap">android.request.availableDynamicRangeProfilesMap</a></li>
             <li
             ><a href="#static_android.request.recommendedTenBitDynamicRangeProfile">android.request.recommendedTenBitDynamicRangeProfile</a></li>
+            <li
+            ><a href="#static_android.request.availableColorSpaceProfiles">android.request.availableColorSpaceProfiles</a></li>
+            <li
+            ><a href="#static_android.request.availableColorSpaceProfilesMap">android.request.availableColorSpaceProfilesMap</a></li>
           </ul>
         </li>
         <li>
@@ -5320,6 +5330,160 @@ set to MAXIMUM_<wbr/>RESOLUTION.<wbr/></p>
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->
         
+                
+          <tr class="entry" id="controls_android.control.settingsOverride">
+            <td class="entry_name
+             " rowspan="5">
+              android.<wbr/>control.<wbr/>settings<wbr/>Override
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">int32</span>
+
+              <span class="entry_type_visibility"> [public]</span>
+
+
+              <span class="entry_type_hwlevel">[limited] </span>
+
+
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">OFF (v3.9)</span>
+                    <span class="entry_type_enum_notes"><p>No keys are applied sooner than the other keys when applying CaptureRequest
+settings to the camera device.<wbr/> This is the default value.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ZOOM (v3.9)</span>
+                    <span class="entry_type_enum_notes"><p>Zoom related keys are applied sooner than the other keys in the CaptureRequest.<wbr/> The
+zoom related keys are:</p>
+<ul>
+<li><a href="#controls_android.control.zoomRatio">android.<wbr/>control.<wbr/>zoom<wbr/>Ratio</a></li>
+<li><a href="#controls_android.scaler.cropRegion">android.<wbr/>scaler.<wbr/>crop<wbr/>Region</a></li>
+<li><a href="#controls_android.control.aeRegions">android.<wbr/>control.<wbr/>ae<wbr/>Regions</a></li>
+<li><a href="#controls_android.control.awbRegions">android.<wbr/>control.<wbr/>awb<wbr/>Regions</a></li>
+<li><a href="#controls_android.control.afRegions">android.<wbr/>control.<wbr/>af<wbr/>Regions</a></li>
+</ul>
+<p>Even though <a href="#controls_android.control.aeRegions">android.<wbr/>control.<wbr/>ae<wbr/>Regions</a>,<wbr/> <a href="#controls_android.control.awbRegions">android.<wbr/>control.<wbr/>awb<wbr/>Regions</a>,<wbr/>
+and <a href="#controls_android.control.afRegions">android.<wbr/>control.<wbr/>af<wbr/>Regions</a> are not directly zoom related,<wbr/> applications
+typically scale these regions together with <a href="#controls_android.scaler.cropRegion">android.<wbr/>scaler.<wbr/>crop<wbr/>Region</a> to have a
+consistent mapping within the current field of view.<wbr/> In this aspect,<wbr/> they are
+related to <a href="#controls_android.scaler.cropRegion">android.<wbr/>scaler.<wbr/>crop<wbr/>Region</a> and <a href="#controls_android.control.zoomRatio">android.<wbr/>control.<wbr/>zoom<wbr/>Ratio</a>.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">VENDOR_START (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[hidden]</span>
+                    <span class="entry_type_enum_value">0x4000</span>
+                    <span class="entry_type_enum_notes"><p>Vendor defined settingsOverride.<wbr/> These depend on vendor implementation.<wbr/></p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>The desired CaptureRequest settings override with which certain keys are
+applied earlier so that they can take effect sooner.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+              <p><a href="#static_android.control.availableSettingsOverrides">android.<wbr/>control.<wbr/>available<wbr/>Settings<wbr/>Overrides</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>9</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>There are some CaptureRequest keys which can be applied earlier than others
+when controls within a CaptureRequest aren't required to take effect at the same time.<wbr/>
+One such example is zoom.<wbr/> Zoom can be applied at a later stage of the camera pipeline.<wbr/>
+As soon as the camera device receives the CaptureRequest,<wbr/> it can apply the requested
+zoom value onto an earlier request that's already in the pipeline,<wbr/> thus improves zoom
+latency.<wbr/></p>
+<p>This key's value in the capture result reflects whether the controls for this capture
+are overridden "by" a newer request.<wbr/> This means that if a capture request turns on
+settings override,<wbr/> the capture result of an earlier request will contain the key value
+of ZOOM.<wbr/> On the other hand,<wbr/> if a capture request has settings override turned on,<wbr/>
+but all newer requests have it turned off,<wbr/> the key's value in the capture result will
+be OFF because this capture isn't overridden by a newer capture.<wbr/> In the two examples
+below,<wbr/> the capture results columns illustrate the settingsOverride values in different
+scenarios.<wbr/></p>
+<p>Assuming the zoom settings override can speed up by 1 frame,<wbr/> below example illustrates
+the speed-up at the start of capture session:</p>
+<pre><code>Camera session created
+Request 1 (zoom=1.<wbr/>0x,<wbr/> override=ZOOM) -&gt;
+Request 2 (zoom=1.<wbr/>2x,<wbr/> override=ZOOM) -&gt;
+Request 3 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM) -&gt;  Result 1 (zoom=1.<wbr/>2x,<wbr/> override=ZOOM)
+Request 4 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM) -&gt;  Result 2 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM)
+Request 5 (zoom=1.<wbr/>8x,<wbr/> override=ZOOM) -&gt;  Result 3 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM)
+                                     -&gt;  Result 4 (zoom=1.<wbr/>8x,<wbr/> override=ZOOM)
+                                     -&gt;  Result 5 (zoom=1.<wbr/>8x,<wbr/> override=OFF)
+</code></pre>
+<p>The application can turn on settings override and use zoom as normal.<wbr/> The example
+shows that the later zoom values (1.<wbr/>2x,<wbr/> 1.<wbr/>4x,<wbr/> 1.<wbr/>6x,<wbr/> and 1.<wbr/>8x) overwrite the zoom
+values (1.<wbr/>0x,<wbr/> 1.<wbr/>2x,<wbr/> 1.<wbr/>4x,<wbr/> and 1.<wbr/>8x) of earlier requests (#1,<wbr/> #2,<wbr/> #3,<wbr/> and #4).<wbr/></p>
+<p>The application must make sure the settings override doesn't interfere with user
+journeys requiring simultaneous application of all controls in CaptureRequest on the
+requested output targets.<wbr/> For example,<wbr/> if the application takes a still capture using
+CameraCaptureSession#capture,<wbr/> and the repeating request immediately sets a different
+zoom value using override,<wbr/> the inflight still capture could have its zoom value
+overwritten unexpectedly.<wbr/></p>
+<p>So the application is strongly recommended to turn off settingsOverride when taking
+still/<wbr/>burst captures,<wbr/> and turn it back on when there is only repeating viewfinder
+request and no inflight still/<wbr/>burst captures.<wbr/></p>
+<p>Below is the example demonstrating the transitions in and out of the
+settings override:</p>
+<pre><code>Request 1 (zoom=1.<wbr/>0x,<wbr/> override=OFF)
+Request 2 (zoom=1.<wbr/>2x,<wbr/> override=OFF)
+Request 3 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM)  -&gt; Result 1 (zoom=1.<wbr/>0x,<wbr/> override=OFF)
+Request 4 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM)  -&gt; Result 2 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM)
+Request 5 (zoom=1.<wbr/>8x,<wbr/> override=OFF)   -&gt; Result 3 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM)
+                                      -&gt; Result 4 (zoom=1.<wbr/>6x,<wbr/> override=OFF)
+                                      -&gt; Result 5 (zoom=1.<wbr/>8x,<wbr/> override=OFF)
+</code></pre>
+<p>This example shows that:</p>
+<ul>
+<li>The application "ramps in" settings override by setting the control to ZOOM.<wbr/>
+In the example,<wbr/> request #3 enables zoom settings override.<wbr/> Because the camera device
+can speed up applying zoom by 1 frame,<wbr/> the outputs of request #2 has 1.<wbr/>4x zoom,<wbr/> the
+value specified in request #3.<wbr/></li>
+<li>The application "ramps out" of settings override by setting the control to OFF.<wbr/> In
+the example,<wbr/> request #5 changes the override to OFF.<wbr/> Because request #4's zoom
+takes effect in result #3,<wbr/> result #4's zoom remains the same until new value takes
+effect in result #5.<wbr/></li>
+</ul>
+            </td>
+          </tr>
+
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">HAL Implementation Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>The HAL must set this value to OFF in all of the Capture templates.<wbr/></p>
+<p>Typically the HAL unblocks processCaptureRequest at the same rate as the sensor capture,<wbr/>
+and the HAL queues the capture settings in its pipeline when processCaptureRequest
+returns.<wbr/> However,<wbr/> when the settings override is enabled,<wbr/> the HAL can optimize the
+overridden controls' latency by applying them as soon as processCaptureRequest is
+called,<wbr/> rather than when it's unblocked.<wbr/></p>
+<p>If zoom settings override is on,<wbr/> when zooming in,<wbr/> the HAL must be able to apply the
+zoom related settings at least 2 frames ahead.<wbr/></p>
+            </td>
+          </tr>
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
         
 
       <!-- end of kind -->
@@ -7106,6 +7270,71 @@ which are applicable when <a href="#controls_android.sensor.pixelMode">android.<
               <p>Refer to hal details for <a href="#static_android.control.availableHighSpeedVideoConfigurations">android.<wbr/>control.<wbr/>available<wbr/>High<wbr/>Speed<wbr/>Video<wbr/>Configurations</a>.<wbr/></p>
             </td>
           </tr>
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="static_android.control.availableSettingsOverrides">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>control.<wbr/>available<wbr/>Settings<wbr/>Overrides
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+                <span class="entry_type_container">x</span>
+
+                <span class="entry_type_array">
+                  n
+                </span>
+              <span class="entry_type_visibility"> [public as enumList]</span>
+
+
+
+
+                <div class="entry_type_notes">list of enums</div>
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>List of available settings overrides supported by the camera device that can
+be used to speed up certain controls.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+              <p>Any value listed in <a href="#controls_android.control.settingsOverride">android.<wbr/>control.<wbr/>settings<wbr/>Override</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>9</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>When not all controls within a CaptureRequest are required to take effect
+at the same time on the outputs,<wbr/> the camera device may apply certain request keys sooner
+to improve latency.<wbr/> This list contains such supported settings overrides.<wbr/> Each settings
+override corresponds to a set of CaptureRequest keys that can be sped up when applying.<wbr/></p>
+<p>A supported settings override can be passed in via
+<a href="https://developer.android.com/reference/android/hardware/camera2/CaptureRequest.html#CONTROL_SETTINGS_OVERRIDE">Capture<wbr/>Request#CONTROL_<wbr/>SETTINGS_<wbr/>OVERRIDE</a>,<wbr/> and the
+CaptureRequest keys corresponding to the override are applied as soon as possible,<wbr/> not
+bound by per-frame synchronization.<wbr/> See <a href="#controls_android.control.settingsOverride">android.<wbr/>control.<wbr/>settings<wbr/>Override</a> for the
+CaptureRequest keys for each override.<wbr/></p>
+<p>OFF is always included in this list.<wbr/></p>
+            </td>
+          </tr>
+
 
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->
@@ -11115,6 +11344,160 @@ physical camera device.<wbr/></p>
             <td class="entry_details" colspan="6">
               <p>For all capture request templates,<wbr/> this field must be set to 1.<wbr/>0 in order to have
 consistent field of views between different modes.<wbr/></p>
+            </td>
+          </tr>
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="dynamic_android.control.settingsOverride">
+            <td class="entry_name
+             " rowspan="5">
+              android.<wbr/>control.<wbr/>settings<wbr/>Override
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">int32</span>
+
+              <span class="entry_type_visibility"> [public]</span>
+
+
+              <span class="entry_type_hwlevel">[limited] </span>
+
+
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">OFF (v3.9)</span>
+                    <span class="entry_type_enum_notes"><p>No keys are applied sooner than the other keys when applying CaptureRequest
+settings to the camera device.<wbr/> This is the default value.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ZOOM (v3.9)</span>
+                    <span class="entry_type_enum_notes"><p>Zoom related keys are applied sooner than the other keys in the CaptureRequest.<wbr/> The
+zoom related keys are:</p>
+<ul>
+<li><a href="#controls_android.control.zoomRatio">android.<wbr/>control.<wbr/>zoom<wbr/>Ratio</a></li>
+<li><a href="#controls_android.scaler.cropRegion">android.<wbr/>scaler.<wbr/>crop<wbr/>Region</a></li>
+<li><a href="#controls_android.control.aeRegions">android.<wbr/>control.<wbr/>ae<wbr/>Regions</a></li>
+<li><a href="#controls_android.control.awbRegions">android.<wbr/>control.<wbr/>awb<wbr/>Regions</a></li>
+<li><a href="#controls_android.control.afRegions">android.<wbr/>control.<wbr/>af<wbr/>Regions</a></li>
+</ul>
+<p>Even though <a href="#controls_android.control.aeRegions">android.<wbr/>control.<wbr/>ae<wbr/>Regions</a>,<wbr/> <a href="#controls_android.control.awbRegions">android.<wbr/>control.<wbr/>awb<wbr/>Regions</a>,<wbr/>
+and <a href="#controls_android.control.afRegions">android.<wbr/>control.<wbr/>af<wbr/>Regions</a> are not directly zoom related,<wbr/> applications
+typically scale these regions together with <a href="#controls_android.scaler.cropRegion">android.<wbr/>scaler.<wbr/>crop<wbr/>Region</a> to have a
+consistent mapping within the current field of view.<wbr/> In this aspect,<wbr/> they are
+related to <a href="#controls_android.scaler.cropRegion">android.<wbr/>scaler.<wbr/>crop<wbr/>Region</a> and <a href="#controls_android.control.zoomRatio">android.<wbr/>control.<wbr/>zoom<wbr/>Ratio</a>.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">VENDOR_START (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[hidden]</span>
+                    <span class="entry_type_enum_value">0x4000</span>
+                    <span class="entry_type_enum_notes"><p>Vendor defined settingsOverride.<wbr/> These depend on vendor implementation.<wbr/></p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>The desired CaptureRequest settings override with which certain keys are
+applied earlier so that they can take effect sooner.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+              <p><a href="#static_android.control.availableSettingsOverrides">android.<wbr/>control.<wbr/>available<wbr/>Settings<wbr/>Overrides</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>9</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>There are some CaptureRequest keys which can be applied earlier than others
+when controls within a CaptureRequest aren't required to take effect at the same time.<wbr/>
+One such example is zoom.<wbr/> Zoom can be applied at a later stage of the camera pipeline.<wbr/>
+As soon as the camera device receives the CaptureRequest,<wbr/> it can apply the requested
+zoom value onto an earlier request that's already in the pipeline,<wbr/> thus improves zoom
+latency.<wbr/></p>
+<p>This key's value in the capture result reflects whether the controls for this capture
+are overridden "by" a newer request.<wbr/> This means that if a capture request turns on
+settings override,<wbr/> the capture result of an earlier request will contain the key value
+of ZOOM.<wbr/> On the other hand,<wbr/> if a capture request has settings override turned on,<wbr/>
+but all newer requests have it turned off,<wbr/> the key's value in the capture result will
+be OFF because this capture isn't overridden by a newer capture.<wbr/> In the two examples
+below,<wbr/> the capture results columns illustrate the settingsOverride values in different
+scenarios.<wbr/></p>
+<p>Assuming the zoom settings override can speed up by 1 frame,<wbr/> below example illustrates
+the speed-up at the start of capture session:</p>
+<pre><code>Camera session created
+Request 1 (zoom=1.<wbr/>0x,<wbr/> override=ZOOM) -&gt;
+Request 2 (zoom=1.<wbr/>2x,<wbr/> override=ZOOM) -&gt;
+Request 3 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM) -&gt;  Result 1 (zoom=1.<wbr/>2x,<wbr/> override=ZOOM)
+Request 4 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM) -&gt;  Result 2 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM)
+Request 5 (zoom=1.<wbr/>8x,<wbr/> override=ZOOM) -&gt;  Result 3 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM)
+                                     -&gt;  Result 4 (zoom=1.<wbr/>8x,<wbr/> override=ZOOM)
+                                     -&gt;  Result 5 (zoom=1.<wbr/>8x,<wbr/> override=OFF)
+</code></pre>
+<p>The application can turn on settings override and use zoom as normal.<wbr/> The example
+shows that the later zoom values (1.<wbr/>2x,<wbr/> 1.<wbr/>4x,<wbr/> 1.<wbr/>6x,<wbr/> and 1.<wbr/>8x) overwrite the zoom
+values (1.<wbr/>0x,<wbr/> 1.<wbr/>2x,<wbr/> 1.<wbr/>4x,<wbr/> and 1.<wbr/>8x) of earlier requests (#1,<wbr/> #2,<wbr/> #3,<wbr/> and #4).<wbr/></p>
+<p>The application must make sure the settings override doesn't interfere with user
+journeys requiring simultaneous application of all controls in CaptureRequest on the
+requested output targets.<wbr/> For example,<wbr/> if the application takes a still capture using
+CameraCaptureSession#capture,<wbr/> and the repeating request immediately sets a different
+zoom value using override,<wbr/> the inflight still capture could have its zoom value
+overwritten unexpectedly.<wbr/></p>
+<p>So the application is strongly recommended to turn off settingsOverride when taking
+still/<wbr/>burst captures,<wbr/> and turn it back on when there is only repeating viewfinder
+request and no inflight still/<wbr/>burst captures.<wbr/></p>
+<p>Below is the example demonstrating the transitions in and out of the
+settings override:</p>
+<pre><code>Request 1 (zoom=1.<wbr/>0x,<wbr/> override=OFF)
+Request 2 (zoom=1.<wbr/>2x,<wbr/> override=OFF)
+Request 3 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM)  -&gt; Result 1 (zoom=1.<wbr/>0x,<wbr/> override=OFF)
+Request 4 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM)  -&gt; Result 2 (zoom=1.<wbr/>4x,<wbr/> override=ZOOM)
+Request 5 (zoom=1.<wbr/>8x,<wbr/> override=OFF)   -&gt; Result 3 (zoom=1.<wbr/>6x,<wbr/> override=ZOOM)
+                                      -&gt; Result 4 (zoom=1.<wbr/>6x,<wbr/> override=OFF)
+                                      -&gt; Result 5 (zoom=1.<wbr/>8x,<wbr/> override=OFF)
+</code></pre>
+<p>This example shows that:</p>
+<ul>
+<li>The application "ramps in" settings override by setting the control to ZOOM.<wbr/>
+In the example,<wbr/> request #3 enables zoom settings override.<wbr/> Because the camera device
+can speed up applying zoom by 1 frame,<wbr/> the outputs of request #2 has 1.<wbr/>4x zoom,<wbr/> the
+value specified in request #3.<wbr/></li>
+<li>The application "ramps out" of settings override by setting the control to OFF.<wbr/> In
+the example,<wbr/> request #5 changes the override to OFF.<wbr/> Because request #4's zoom
+takes effect in result #3,<wbr/> result #4's zoom remains the same until new value takes
+effect in result #5.<wbr/></li>
+</ul>
+            </td>
+          </tr>
+
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">HAL Implementation Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>The HAL must set this value to OFF in all of the Capture templates.<wbr/></p>
+<p>Typically the HAL unblocks processCaptureRequest at the same rate as the sensor capture,<wbr/>
+and the HAL queues the capture settings in its pipeline when processCaptureRequest
+returns.<wbr/> However,<wbr/> when the settings override is enabled,<wbr/> the HAL can optimize the
+overridden controls' latency by applying them as soon as processCaptureRequest is
+called,<wbr/> rather than when it's unblocked.<wbr/></p>
+<p>If zoom settings override is on,<wbr/> when zooming in,<wbr/> the HAL must be able to apply the
+zoom related settings at least 2 frames ahead.<wbr/></p>
             </td>
           </tr>
 
@@ -19436,6 +19819,24 @@ lists all of the supported stream use cases.<wbr/></p>
 mandatory stream combinations involving stream use cases,<wbr/> which can also be queried
 via <a href="https://developer.android.com/reference/android/hardware/camera2/params/MandatoryStreamCombination.html">MandatoryStreamCombination</a>.<wbr/></p></span>
                   </li>
+                  <li>
+                    <span class="entry_type_enum_name">COLOR_SPACE_PROFILES (v3.9)</span>
+                    <span class="entry_type_enum_optional">[optional]</span>
+                    <span class="entry_type_enum_hidden">[java_public]</span>
+                    <span class="entry_type_enum_notes"><p>The device supports querying the possible combinations of color spaces,<wbr/> image
+formats,<wbr/> and dynamic range profiles supported by the camera and requesting a
+particular color space for a session via
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/SessionConfiguration.html#setColorSpace">SessionConfiguration#setColorSpace</a>.<wbr/></p>
+<p>Cameras that enable this capability may or may not also implement dynamic range
+profiles.<wbr/> If they don't,<wbr/>
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/ColorSpaceProfiles.html#getSupportedDynamicRangeProfiles">ColorSpaceProfiles#getSupportedDynamicRangeProfiles</a>
+will return only
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/DynamicRangeProfiles.html#STANDARD">DynamicRangeProfiles#STANDARD</a> and
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/ColorSpaceProfiles.html#getSupportedColorSpacesForDynamicRange">ColorSpaceProfiles#getSupportedColorSpacesForDynamicRange</a>
+will assume support of the
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/DynamicRangeProfiles.html#STANDARD">DynamicRangeProfiles#STANDARD</a>
+profile in all combinations of color spaces and image formats.<wbr/></p></span>
+                  </li>
                 </ul>
 
             </td> <!-- entry_type -->
@@ -20392,6 +20793,263 @@ range profile when calling
             </td>
           </tr>
 
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="static_android.request.availableColorSpaceProfiles">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>request.<wbr/>available<wbr/>Color<wbr/>Space<wbr/>Profiles
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+
+              <span class="entry_type_visibility"> [java_public as colorSpaceProfiles]</span>
+
+              <span class="entry_type_synthetic">[synthetic] </span>
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>An interface for querying the color space profiles supported by a camera device.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>9</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>A color space profile is a combination of a color space,<wbr/> an image format,<wbr/> and a dynamic
+range profile.<wbr/> Camera clients can retrieve the list of supported color spaces by calling
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/ColorSpaceProfiles.html#getSupportedColorSpaces">ColorSpaceProfiles#getSupportedColorSpaces</a> or
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/ColorSpaceProfiles.html#getSupportedColorSpacesForDynamicRange">ColorSpaceProfiles#getSupportedColorSpacesForDynamicRange</a>.<wbr/>
+If a camera does not support the
+<a href="https://developer.android.com/reference/android/hardware/camera2/CameraCharacteristics.html#REQUEST_AVAILABLE_CAPABILITIES_DYNAMIC_RANGE_TEN_BIT">Camera<wbr/>Characteristics#REQUEST_<wbr/>AVAILABLE_<wbr/>CAPABILITIES_<wbr/>DYNAMIC_<wbr/>RANGE_<wbr/>TEN_<wbr/>BIT</a>
+capability,<wbr/> the dynamic range profile will always be
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/DynamicRangeProfiles.html#STANDARD">DynamicRangeProfiles#STANDARD</a>.<wbr/> Color space
+capabilities are queried in combination with an <a href="https://developer.android.com/reference/android/graphics/ImageFormat.html">ImageFormat</a>.<wbr/>
+If a camera client wants to know the general color space capabilities of a camera device
+regardless of image format,<wbr/> it can specify <a href="https://developer.android.com/reference/android/graphics/ImageFormat.html#UNKNOWN">ImageFormat#UNKNOWN</a>.<wbr/>
+The color space for a session can be configured by setting the SessionConfiguration
+color space via <a href="https://developer.android.com/reference/android/hardware/camera2/params/SessionConfiguration.html#setColorSpace">SessionConfiguration#setColorSpace</a>.<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="static_android.request.availableColorSpaceProfilesMap">
+            <td class="entry_name
+             " rowspan="5">
+              android.<wbr/>request.<wbr/>available<wbr/>Color<wbr/>Space<wbr/>Profiles<wbr/>Map
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">int64</span>
+                <span class="entry_type_container">x</span>
+
+                <span class="entry_type_array">
+                  n x 3
+                </span>
+              <span class="entry_type_visibility"> [ndk_public]</span>
+
+
+
+
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">UNSPECIFIED (v3.9)</span>
+                    <span class="entry_type_enum_value">-1</span>
+                    <span class="entry_type_enum_notes"><p>Default value,<wbr/> when not explicitly specified.<wbr/> The Camera device will choose the color
+space to employ.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">SRGB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">0</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space sRGB standardized as IEC 61966-2.<wbr/>1:1999.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">LINEAR_SRGB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">1</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space sRGB standardized as IEC 61966-2.<wbr/>1:1999.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">EXTENDED_SRGB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">2</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space scRGB-nl standardized as IEC 61966-2-2:2003.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">LINEAR_EXTENDED_SRGB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">3</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space scRGB standardized as IEC 61966-2-2:2003.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">BT709 (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">4</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space BT.<wbr/>709 standardized as Rec.<wbr/> ITU-R BT.<wbr/>709-5.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">BT2020 (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">5</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space BT.<wbr/>2020 standardized as Rec.<wbr/> ITU-R BT.<wbr/>2020-1.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">DCI_P3 (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">6</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space DCI-P3 standardized as SMPTE RP 431-2-2007.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">DISPLAY_P3 (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">7</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space Display P3 based on SMPTE RP 431-2-2007 and IEC 61966-2.<wbr/>1:1999.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">NTSC_1953 (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">8</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space NTSC,<wbr/> 1953 standard.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">SMPTE_C (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">9</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space SMPTE C.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ADOBE_RGB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">10</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space Adobe RGB (1998).<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">PRO_PHOTO_RGB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">11</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space ProPhoto RGB standardized as ROMM RGB ISO 22028-2:2013.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ACES (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">12</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space ACES standardized as SMPTE ST 2065-1:2012.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ACESCG (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">13</span>
+                    <span class="entry_type_enum_notes"><p>RGB color space ACEScg standardized as Academy S-2014-004.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">CIE_XYZ (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">14</span>
+                    <span class="entry_type_enum_notes"><p>XYZ color space CIE XYZ.<wbr/> This color space assumes standard illuminant D50 as its white
+point.<wbr/></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">CIE_LAB (v3.9)</span>
+                    <span class="entry_type_enum_hidden">[system]</span>
+                    <span class="entry_type_enum_value">15</span>
+                    <span class="entry_type_enum_notes"><p>Lab color space CIE L<em>a</em>b*.<wbr/> This color space uses CIE XYZ D50 as a profile conversion
+space.<wbr/></p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>A list of all possible color space profiles supported by a camera device.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>9</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>A color space profile is a combination of a color space,<wbr/> an image format,<wbr/> and a dynamic range
+profile.<wbr/> If a camera does not support the
+<a href="https://developer.android.com/reference/android/hardware/camera2/CameraCharacteristics.html#REQUEST_AVAILABLE_CAPABILITIES_DYNAMIC_RANGE_TEN_BIT">Camera<wbr/>Characteristics#REQUEST_<wbr/>AVAILABLE_<wbr/>CAPABILITIES_<wbr/>DYNAMIC_<wbr/>RANGE_<wbr/>TEN_<wbr/>BIT</a>
+capability,<wbr/> the dynamic range profile will always be
+<a href="https://developer.android.com/reference/android/hardware/camera2/params/DynamicRangeProfiles.html#STANDARD">DynamicRangeProfiles#STANDARD</a>.<wbr/> Camera clients can
+use <a href="https://developer.android.com/reference/android/hardware/camera2/params/SessionConfiguration.html#setColorSpace">SessionConfiguration#setColorSpace</a> to select
+a color space.<wbr/></p>
+            </td>
+          </tr>
+
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">HAL Implementation Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>The array contains three entries per supported profile:</p>
+<p>1) The supported color space.<wbr/>
+2) An image format which can be used with this color space.<wbr/>
+3) A bitmap of all compatible dynamic range profiles,<wbr/> if the device is HDR-capable.<wbr/></p>
+<p>The possible values for #1 are the positive values of the
+ANDROID_<wbr/>REQUEST_<wbr/>AVAILABLE_<wbr/>COLOR_<wbr/>SPACE_<wbr/>PROFILES_<wbr/>MAP_<wbr/>* enum,<wbr/> which is equivalent to
+<a href="https://developer.android.com/reference/android/graphics/ColorSpace/Named.html">Named</a> and its ordinals.<wbr/> UNSPECIFIED should not be
+used here.<wbr/></p>
+<p>The possible values for #2 consist of the public-facing image/<wbr/>pixel formats,<wbr/> found at
+<a href="https://developer.android.com/reference/android/graphics/ImageFormat.html">ImageFormat</a> and <a href="https://developer.android.com/reference/android/graphics/PixelFormat.html">PixelFormat</a>.<wbr/> Each map
+to a HAL pixel format except for <a href="https://developer.android.com/reference/android/graphics/ImageFormat/JPEG.html">JPEG</a>,<wbr/>
+<a href="https://developer.android.com/reference/android/graphics/ImageFormat/HEIC.html">HEIC</a>,<wbr/> and
+<a href="https://developer.android.com/reference/android/graphics/ImageFormat/DEPTH_JPEG.html">DEPTH_<wbr/>JPEG</a>.<wbr/> Depth formats besides DEPTH_<wbr/>JPEG are
+not applicable and should not be specified.<wbr/> If there are no constraints on the type of
+image format a color space is compatible with,<wbr/> this can be
+<a href="https://developer.android.com/reference/android/graphics/ImageFormat/UNKNOWN.html">UNKNOWN</a>.<wbr/></p>
+<p>If the device is not HDR-capable,<wbr/> #3 should always be
+ANDROID_<wbr/>REQUEST_<wbr/>AVAILABLE_<wbr/>DYNAMIC_<wbr/>RANGE_<wbr/>PROFILES_<wbr/>STANDARD.<wbr/> Otherwise,<wbr/> #3 should be a
+bitmap of the compatible ANDROID_<wbr/>REQUEST_<wbr/>AVAILABLE_<wbr/>DYNAMIC_<wbr/>RANGE_<wbr/>PROFILES_<wbr/>* values.<wbr/></p>
+<p>For devices that support P3 color,<wbr/> it is highly recommended to advertise
+<a href="https://developer.android.com/reference/android/graphics/ColorSpace/Named/DISPLAY_P3.html">DISPLAY_<wbr/>P3</a>
+unless the profile is specifically designed for playback in a theater environment
+(<a href="https://developer.android.com/reference/android/graphics/ColorSpace/Named/DCI_P3.html">DCI_<wbr/>P3</a>).<wbr/></p>
+            </td>
+          </tr>
 
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->
