@@ -46,6 +46,7 @@
 #include <aidl/android/hardware/camera/metadata/ControlEnableZsl.h>
 #include <aidl/android/hardware/camera/metadata/ControlAfSceneChange.h>
 #include <aidl/android/hardware/camera/metadata/ControlExtendedSceneMode.h>
+#include <aidl/android/hardware/camera/metadata/ControlSettingsOverride.h>
 #include <aidl/android/hardware/camera/metadata/DemosaicMode.h>
 #include <aidl/android/hardware/camera/metadata/EdgeMode.h>
 #include <aidl/android/hardware/camera/metadata/FlashMode.h>
@@ -63,6 +64,7 @@
 #include <aidl/android/hardware/camera/metadata/RequestType.h>
 #include <aidl/android/hardware/camera/metadata/RequestAvailableCapabilities.h>
 #include <aidl/android/hardware/camera/metadata/RequestAvailableDynamicRangeProfilesMap.h>
+#include <aidl/android/hardware/camera/metadata/RequestAvailableColorSpaceProfilesMap.h>
 #include <aidl/android/hardware/camera/metadata/ScalerAvailableFormats.h>
 #include <aidl/android/hardware/camera/metadata/ScalerAvailableStreamConfigurations.h>
 #include <aidl/android/hardware/camera/metadata/ScalerCroppingType.h>
@@ -353,6 +355,10 @@ static_assert(static_cast<int>(ANDROID_CONTROL_ZOOM_RATIO)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_ZOOM_RATIO));
 static_assert(static_cast<int>(ANDROID_CONTROL_AVAILABLE_HIGH_SPEED_VIDEO_CONFIGURATIONS_MAXIMUM_RESOLUTION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_AVAILABLE_HIGH_SPEED_VIDEO_CONFIGURATIONS_MAXIMUM_RESOLUTION));
+static_assert(static_cast<int>(ANDROID_CONTROL_SETTINGS_OVERRIDE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_SETTINGS_OVERRIDE));
+static_assert(static_cast<int>(ANDROID_CONTROL_AVAILABLE_SETTINGS_OVERRIDES)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_AVAILABLE_SETTINGS_OVERRIDES));
 static_assert(static_cast<int>(ANDROID_DEMOSAIC_MODE)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DEMOSAIC_MODE));
 static_assert(static_cast<int>(ANDROID_EDGE_MODE)
@@ -511,6 +517,8 @@ static_assert(static_cast<int>(ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_MAP));
 static_assert(static_cast<int>(ANDROID_REQUEST_RECOMMENDED_TEN_BIT_DYNAMIC_RANGE_PROFILE)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_REQUEST_RECOMMENDED_TEN_BIT_DYNAMIC_RANGE_PROFILE));
+static_assert(static_cast<int>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP));
 static_assert(static_cast<int>(ANDROID_SCALER_CROP_REGION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_SCALER_CROP_REGION));
 static_assert(static_cast<int>(ANDROID_SCALER_AVAILABLE_FORMATS)
@@ -1083,6 +1091,13 @@ static_assert(static_cast<int32_t>(ANDROID_CONTROL_EXTENDED_SCENE_MODE_BOKEH_CON
 static_assert(static_cast<int32_t>(ANDROID_CONTROL_EXTENDED_SCENE_MODE_VENDOR_START)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlExtendedSceneMode::ANDROID_CONTROL_EXTENDED_SCENE_MODE_VENDOR_START));
 
+static_assert(static_cast<int32_t>(ANDROID_CONTROL_SETTINGS_OVERRIDE_OFF)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlSettingsOverride::ANDROID_CONTROL_SETTINGS_OVERRIDE_OFF));
+static_assert(static_cast<int32_t>(ANDROID_CONTROL_SETTINGS_OVERRIDE_ZOOM)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlSettingsOverride::ANDROID_CONTROL_SETTINGS_OVERRIDE_ZOOM));
+static_assert(static_cast<int32_t>(ANDROID_CONTROL_SETTINGS_OVERRIDE_VENDOR_START)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlSettingsOverride::ANDROID_CONTROL_SETTINGS_OVERRIDE_VENDOR_START));
+
 static_assert(static_cast<int32_t>(ANDROID_DEMOSAIC_MODE_FAST)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DemosaicMode::ANDROID_DEMOSAIC_MODE_FAST));
 static_assert(static_cast<int32_t>(ANDROID_DEMOSAIC_MODE_HIGH_QUALITY)
@@ -1226,6 +1241,8 @@ static_assert(static_cast<int32_t>(ANDROID_REQUEST_AVAILABLE_CAPABILITIES_DYNAMI
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::RequestAvailableCapabilities::ANDROID_REQUEST_AVAILABLE_CAPABILITIES_DYNAMIC_RANGE_TEN_BIT));
 static_assert(static_cast<int32_t>(ANDROID_REQUEST_AVAILABLE_CAPABILITIES_STREAM_USE_CASE)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::RequestAvailableCapabilities::ANDROID_REQUEST_AVAILABLE_CAPABILITIES_STREAM_USE_CASE));
+static_assert(static_cast<int32_t>(ANDROID_REQUEST_AVAILABLE_CAPABILITIES_COLOR_SPACE_PROFILES)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::RequestAvailableCapabilities::ANDROID_REQUEST_AVAILABLE_CAPABILITIES_COLOR_SPACE_PROFILES));
 
 static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_MAP_STANDARD)
         == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableDynamicRangeProfilesMap::ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_MAP_STANDARD));
@@ -1253,6 +1270,41 @@ static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFI
         == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableDynamicRangeProfilesMap::ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_MAP_DOLBY_VISION_8B_HDR_OEM_PO));
 static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_MAP_MAX)
         == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableDynamicRangeProfilesMap::ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_MAP_MAX));
+
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_UNSPECIFIED)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_UNSPECIFIED));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SRGB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SRGB));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_SRGB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_SRGB));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_EXTENDED_SRGB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_EXTENDED_SRGB));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_EXTENDED_SRGB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_LINEAR_EXTENDED_SRGB));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT709)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT709));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT2020)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_BT2020));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DCI_P3)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DCI_P3));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DISPLAY_P3)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_DISPLAY_P3));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_NTSC_1953)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_NTSC_1953));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SMPTE_C)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_SMPTE_C));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ADOBE_RGB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ADOBE_RGB));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_PRO_PHOTO_RGB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_PRO_PHOTO_RGB));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACES)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACES));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACESCG)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_ACESCG));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_XYZ)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_XYZ));
+static_assert(static_cast<int64_t>(ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_LAB)
+        == static_cast<int64_t>(::aidl::android::hardware::camera::metadata::RequestAvailableColorSpaceProfilesMap::ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_CIE_LAB));
 
 static_assert(static_cast<int32_t>(ANDROID_SCALER_AVAILABLE_FORMATS_RAW16)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ScalerAvailableFormats::ANDROID_SCALER_AVAILABLE_FORMATS_RAW16));

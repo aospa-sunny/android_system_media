@@ -344,6 +344,41 @@ static inline bool audio_is_channel_mask_spatialized(audio_channel_mask_t channe
             && (channelMask & AUDIO_CHANNEL_OUT_QUAD) == AUDIO_CHANNEL_OUT_QUAD;
 }
 
+/*
+ * MediaFormat channel masks follow the Java channel mask spec
+ * but might be specified as a native channel mask.  This method
+ * does a "smart" correction to ensure a native channel mask.
+ */
+static inline audio_channel_mask_t
+audio_channel_mask_from_media_format_mask(int32_t channelMaskFromFormat) {
+    // KEY_CHANNEL_MASK follows the android.media.AudioFormat java mask
+    // which is left-bitshifted by 2 relative to the native mask
+    if ((channelMaskFromFormat & 0b11) != 0) {
+        // received an unexpected mask (supposed to follow AudioFormat constants
+        // for output masks with the 2 least-significant bits at 0), but
+        // it may come from an extractor that uses native masks: keeping
+        // the mask as given is ok as it contains at least mono or stereo
+        // and potentially the haptic channels
+        return (audio_channel_mask_t)channelMaskFromFormat;
+    } else {
+        // We exclude bits from the lowest haptic bit all the way to the top of int.
+        // to avoid aliasing.  The remainder bits are position bits
+        // which must be shifted by 2 from Java to get native.
+        //
+        // Using the lowest set bit exclusion AND mask (x - 1), we find
+        // all the bits from lowest set bit to the top is m = x | ~(x - 1).
+        // Using the one's complement to two's complement formula ~x = -x - 1,
+        // we can reduce this to m = x | -x.
+        // (Note -x is also the lowest bit extraction AND mask; i.e. lowest_bit = x & -x).
+        const int32_t EXCLUDE_BITS = AUDIO_CHANNEL_HAPTIC_ALL | -AUDIO_CHANNEL_HAPTIC_ALL;
+        const int32_t positionBits = (channelMaskFromFormat & ~EXCLUDE_BITS) >> 2;
+
+        // Haptic bits are identical between Java and native.
+        const int32_t hapticBits = channelMaskFromFormat & AUDIO_CHANNEL_HAPTIC_ALL;
+        return (audio_channel_mask_t)(positionBits | hapticBits);
+    }
+}
+
 /**
  * Expresses the convention when stereo audio samples are stored interleaved
  * in an array.  This should improve readability by allowing code to use
@@ -699,7 +734,7 @@ struct audio_port {
     } ext;
 };
 
-typedef enum {
+typedef enum : int32_t {
     AUDIO_STANDARD_NONE = 0,
     AUDIO_STANDARD_EDID = 1,
 } audio_standard_t;
@@ -1689,6 +1724,12 @@ static inline audio_channel_mask_t audio_channel_mask_out_to_in(audio_channel_ma
     }
 }
 
+static inline audio_channel_mask_t audio_channel_mask_out_to_in_index_mask(audio_channel_mask_t out)
+{
+    return audio_channel_mask_for_index_assignment_from_count(
+            audio_channel_count_from_out_mask(out));
+}
+
 static inline bool audio_channel_position_mask_is_out_canonical(audio_channel_mask_t channelMask)
 {
     if (audio_channel_mask_get_representation(channelMask)
@@ -1832,7 +1873,7 @@ static inline bool audio_is_valid_format(audio_format_t format)
     case AUDIO_FORMAT_APTX_TWSP:
     case AUDIO_FORMAT_LC3:
     case VX_AUDIO_FORMAT_APTX_ADAPTIVE_QLEA:
-//    case AUDIO_FORMAT_APTX_ADAPTIVE_QLEA:
+    case AUDIO_FORMAT_APTX_ADAPTIVE_R4:
         return true;
     case AUDIO_FORMAT_MPEGH:
         switch (format) {
