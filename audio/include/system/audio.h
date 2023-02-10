@@ -737,6 +737,8 @@ struct audio_port {
 typedef enum : int32_t {
     AUDIO_STANDARD_NONE = 0,
     AUDIO_STANDARD_EDID = 1,
+    AUDIO_STANDARD_SADB = 2,
+    AUDIO_STANDARD_VSADB = 3,
 } audio_standard_t;
 
 /**
@@ -1621,6 +1623,9 @@ static inline audio_channel_mask_t audio_channel_out_mask_from_count(uint32_t ch
         break;
     case FCC_8:
         bits = AUDIO_CHANNEL_OUT_7POINT1;
+        break;
+    case 10: // 5.1.4
+        bits = AUDIO_CHANNEL_OUT_5POINT1POINT4;
         break;
     case FCC_12:
         bits = AUDIO_CHANNEL_OUT_7POINT1POINT4;
