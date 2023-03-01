@@ -29,9 +29,23 @@ constexpr int32_t kTestPortId = 1;
 constexpr float kFloatError = 0.1f;
 constexpr float kMelFloatError = 0.0001f;
 
+/** Value used for CSD calculation. 3 MELs with this value will cause a change of 1% in CSD. */
+constexpr float kCustomMelDbA = 107.f;
+
 using ::testing::ElementsAre;
 using ::testing::Pointwise;
 using ::testing::FloatNear;
+
+TEST(MelAggregatorTest, ResetAggregator) {
+    MelAggregator aggregator{100};
+
+    aggregator.aggregateAndAddNewMelRecord(MelRecord(1, {10.f, 10.f}, 0));
+    aggregator.reset(1.f, {CsdRecord(1, 1, 1.f, 1.f)});
+
+    EXPECT_EQ(aggregator.getCachedMelRecordsSize(), size_t{0});
+    EXPECT_EQ(aggregator.getCsd(), 1.f);
+    EXPECT_EQ(aggregator.getCsdRecordsSize(), size_t{1});
+}
 
 TEST(MelAggregatorTest, AggregateValuesFromDifferentStreams) {
     MelAggregator aggregator{/* csdWindowSeconds */ 100};
@@ -114,12 +128,15 @@ TEST(MelAggregatorTest, CheckMelIntervalSplit) {
 TEST(MelAggregatorTest, CsdRollingWindowDiscardsOldElements) {
     MelAggregator aggregator{/* csdWindowSeconds */ 3};
 
-    aggregator.aggregateAndAddNewMelRecord(MelRecord(kTestPortId, std::vector<float>(3, 107.0f),
-                                                    /* timestamp */0));
+    aggregator.aggregateAndAddNewMelRecord(MelRecord(kTestPortId,
+                                                     std::vector<float>(3, kCustomMelDbA),
+                                                     /* timestamp */0));
     float csdValue = aggregator.getCsd();
-    aggregator.aggregateAndAddNewMelRecord(MelRecord(kTestPortId, std::vector<float>(3, 107.0f),
-                                                    /* timestamp */3));
+    auto records = aggregator.aggregateAndAddNewMelRecord(
+        MelRecord(kTestPortId, std::vector<float>(3, kCustomMelDbA), /* timestamp */3));
 
+    EXPECT_EQ(records.size(), size_t{2});  // new record and record to remove
+    EXPECT_TRUE(records[0].value * records[1].value < 0.f);
     EXPECT_EQ(csdValue, aggregator.getCsd());
     EXPECT_EQ(aggregator.getCsdRecordsSize(), size_t{1});
 }
@@ -128,9 +145,11 @@ TEST(MelAggregatorTest, CsdReaches100PercWith107dB) {
     MelAggregator aggregator{/* csdWindowSeconds */ 300};
 
     // 287s of 107dB should produce at least 100% CSD
-    aggregator.aggregateAndAddNewMelRecord(MelRecord(kTestPortId, std::vector<float>(288, 107.0f),
-                                                    /* timestamp */0));
+    auto records = aggregator.aggregateAndAddNewMelRecord(
+        MelRecord(kTestPortId, std::vector<float>(288, kCustomMelDbA), /* timestamp */0));
 
+    // each record should have a CSD value between 1% and 2%
+    EXPECT_GE(records.size(), size_t{50});
     EXPECT_GE(aggregator.getCsd(), 1.f);
 }
 
@@ -139,10 +158,13 @@ TEST(MelAggregatorTest, CsdReaches100PercWith80dB) {
     MelAggregator aggregator{seconds40h};
 
     // 40h of 80dB should produce (near) exactly 100% CSD
-    aggregator.aggregateAndAddNewMelRecord(MelRecord(kTestPortId,
-                                                     std::vector<float>(seconds40h, 80.0f),
-                                                     /* timestamp */0));
+    auto records = aggregator.aggregateAndAddNewMelRecord(
+        MelRecord(kTestPortId,
+                  std::vector<float>(seconds40h, 80.0f),
+            /* timestamp */0));
 
+    // each record should have a CSD value between 1% and 2%
+    EXPECT_GE(records.size(), size_t{50});
     EXPECT_NEAR(aggregator.getCsd(), 1.f, kMelFloatError);
 }
 
