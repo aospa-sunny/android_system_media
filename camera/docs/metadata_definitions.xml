@@ -663,7 +663,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
                 An external flash has been turned on.
 
                 It informs the camera device that an external flash has been turned on, and that
-                metering (and continuous focus if active) should be quickly recaculated to account
+                metering (and continuous focus if active) should be quickly recalculated to account
                 for the external flash. Otherwise, this mode acts like ON.
 
                 When the external flash is turned off, AE mode should be changed to one of the
@@ -787,7 +787,9 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
 
               For camera devices with the
               {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-              capability,
+              capability or devices where
+              {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
               android.sensor.info.activeArraySizeMaximumResolution /
               android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
               coordinate system for requests where android.sensor.pixelMode is set to
@@ -1121,7 +1123,10 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
 
               For camera devices with the
               {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-              capability, android.sensor.info.activeArraySizeMaximumResolution /
+              capability or devices where
+              {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode},
+              android.sensor.info.activeArraySizeMaximumResolution /
               android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
               coordinate system for requests where android.sensor.pixelMode is set to
               {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
@@ -1478,7 +1483,10 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
 
               For camera devices with the
               {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-              capability, android.sensor.info.activeArraySizeMaximumResolution /
+              capability or devices where
+              {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode},
+              android.sensor.info.activeArraySizeMaximumResolution /
               android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
               coordinate system for requests where android.sensor.pixelMode is set to
               {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
@@ -3021,7 +3029,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           </details>
         </entry>
         <entry name="postRawSensitivityBoostRange" type="int32" visibility="public"
-            type_notes="Range of supported post RAW sensitivitiy boosts"
+            type_notes="Range of supported post RAW sensitivity boosts"
             container="array" typedef="rangeInt">
           <array>
             <size>2</size>
@@ -3715,7 +3723,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
               Enable autoframing to keep people in the frame's field of view.
             </notes>
           </value>
-          <value>AUTO
+          <value visibility="hidden">AUTO
             <notes>
               Automatically select ON or OFF based on the system level preferences.
             </notes>
@@ -3745,9 +3753,6 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           When auto-framing is turned off, the transition should be immediate, with no panning or
           zooming to transition to the settings requested by the app. When it is turned on, the
           transition can be immediate or smooth.
-          AUTOFRAMING_AUTO will never be sent to the HAL, though it must be set as the default
-          value in all the capture request templates by the HAL. The camera service will translate
-          AUTO to either ON or OFF based on the system wide preferences.
         </hal_details>
       </entry>
     </controls>
@@ -7191,81 +7196,14 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
               RGB color space sRGB standardized as IEC 61966-2.1:1999.
             </notes>
             </value>
-            <value visibility="system" id="1">LINEAR_SRGB
-            <notes>
-              RGB color space sRGB standardized as IEC 61966-2.1:1999.
-            </notes>
-            </value>
-            <value visibility="system" id="2">EXTENDED_SRGB
-            <notes>
-              RGB color space scRGB-nl standardized as IEC 61966-2-2:2003.
-            </notes>
-            </value>
-            <value visibility="system" id="3">LINEAR_EXTENDED_SRGB
-            <notes>
-              RGB color space scRGB standardized as IEC 61966-2-2:2003.
-            </notes>
-            </value>
-            <value visibility="system" id="4">BT709
-            <notes>
-              RGB color space BT.709 standardized as Rec. ITU-R BT.709-5.
-            </notes>
-            </value>
-            <value visibility="system" id="5">BT2020
-            <notes>
-              RGB color space BT.2020 standardized as Rec. ITU-R BT.2020-1.
-            </notes>
-            </value>
-            <value visibility="system" id="6">DCI_P3
-            <notes>
-              RGB color space DCI-P3 standardized as SMPTE RP 431-2-2007.
-            </notes>
-            </value>
             <value visibility="system" id="7">DISPLAY_P3
             <notes>
               RGB color space Display P3 based on SMPTE RP 431-2-2007 and IEC 61966-2.1:1999.
             </notes>
             </value>
-            <value visibility="system" id="8">NTSC_1953
+            <value visibility="system" id="16">BT2020_HLG
             <notes>
-              RGB color space NTSC, 1953 standard.
-            </notes>
-            </value>
-            <value visibility="system" id="9">SMPTE_C
-            <notes>
-              RGB color space SMPTE C.
-            </notes>
-            </value>
-            <value visibility="system" id="10">ADOBE_RGB
-            <notes>
-              RGB color space Adobe RGB (1998).
-            </notes>
-            </value>
-            <value visibility="system" id="11">PRO_PHOTO_RGB
-            <notes>
-              RGB color space ProPhoto RGB standardized as ROMM RGB ISO 22028-2:2013.
-            </notes>
-            </value>
-            <value visibility="system" id="12">ACES
-            <notes>
-              RGB color space ACES standardized as SMPTE ST 2065-1:2012.
-            </notes>
-            </value>
-            <value visibility="system" id="13">ACESCG
-            <notes>
-              RGB color space ACEScg standardized as Academy S-2014-004.
-            </notes>
-            </value>
-            <value visibility="system" id="14">CIE_XYZ
-            <notes>
-              XYZ color space CIE XYZ. This color space assumes standard illuminant D50 as its white
-              point.
-            </notes>
-            </value>
-            <value visibility="system" id="15">CIE_LAB
-            <notes>
-              Lab color space CIE L*a*b*. This color space uses CIE XYZ D50 as a profile conversion
-              space.
+              RGB color space BT.2100 standardized as Hybrid Log Gamma encoding.
             </notes>
             </value>
           </enum>
@@ -7291,7 +7229,9 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             The possible values for #1 are the positive values of the
             ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_* enum, which is equivalent to
             {@link android.graphics.ColorSpace.Named} and its ordinals. UNSPECIFIED should not be
-            used here.
+            used here. It should be noted that not all {@link android.graphics.ColorSpace.Named}
+            values are supported, only those in the
+            ANDROID_REQUEST_AVAILABLE_COLOR_SPACE_PROFILES_MAP_* enum.
 
             The possible values for #2 consist of the public-facing image/pixel formats, found at
             {@link android.graphics.ImageFormat} and {@link android.graphics.PixelFormat}. Each map
@@ -7305,11 +7245,6 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             If the device is not HDR-capable, #3 should always be
             ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_STANDARD. Otherwise, #3 should be a
             bitmap of the compatible ANDROID_REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES_* values.
-
-            For devices that support P3 color, it is highly recommended to advertise
-            {@link android.graphics.ColorSpace.Named.DISPLAY_P3}
-            unless the profile is specifically designed for playback in a theater environment
-            ({@link android.graphics.ColorSpace.Named.DCI_P3}).
           </hal_details>
         </entry>
       </static>
@@ -7427,7 +7362,10 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
 
             For camera devices with the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            capability, android.sensor.info.activeArraySizeMaximumResolution /
+            capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
+
+            android.sensor.info.activeArraySizeMaximumResolution /
             android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
             coordinate system for requests where android.sensor.pixelMode is set to
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
@@ -8222,7 +8160,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           Note that for Performance Class 12 or higher primary cameras (first rear/front facing
           camera in the camera ID list), camera framework filters out JPEG sizes smaller than
           1080p depending on applications' targetSdkLevel. The camera HAL must still support the
-          smaller JPEG sizes to maintain backward comopatibility.
+          smaller JPEG sizes to maintain backward compatibility.
 
           For LIMITED capability devices
           (`android.info.supportedHardwareLevel == LIMITED`),
@@ -9873,7 +9811,8 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             counterparts.
             This key will only be present for devices which advertise the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            capability.
+            capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
             </details>
             <ndk_details>
             The data representation is `int[4]`, which maps to `(left, top, width, height)`.
@@ -9905,7 +9844,8 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
             This key will only be present for devices which advertise the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            capability.
+            capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
             </details>
             <tag id="RAW" />
           </entry>
@@ -9929,7 +9869,8 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
             This key will only be present for devices which advertise the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            capability.
+            capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
             </details>
             <ndk_details>
             The data representation is `int[4]`, which maps to `(left, top, width, height)`.
@@ -9960,13 +9901,23 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             performance etc. These groups can be of various sizes such as 2X2 (quad bayer),
             3X3 (nona-bayer). This key specifies the length and width of the pixels grouped under
             the same color filter.
+            In case the device has the
+            {@link CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
+            capability :
 
-            This key will not be present if REMOSAIC_REPROCESSING is not supported, since RAW images
-            will have a regular bayer pattern.
+            * This key will not be present if REMOSAIC_REPROCESSING is not supported, since RAW
+              images will have a regular bayer pattern.
 
-            This key will not be present for sensors which don't have the
-            {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            capability.
+            In case the device does not have the
+            {@link CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
+            capability :
+
+            * This key will be present if
+              {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}, since RAW
+              images may not necessarily have a regular bayer pattern when
+              {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode} is set to
+              {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
           </details>
         </entry>
         </namespace>
@@ -11022,14 +10973,11 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
                hal_version="3.6">
           <enum>
             <value>DEFAULT
-            <notes> This is the default sensor pixel mode. This is the only sensor pixel mode
-              supported unless a camera device advertises
-              {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}.
+            <notes> This is the default sensor pixel mode.
               </notes>
             </value>
             <value>MAXIMUM_RESOLUTION
-            <notes> This sensor pixel mode is offered by devices with capability
-              {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}.
+            <notes>
               In this mode, sensors typically do not bin pixels, as a result can offer larger
               image sizes.
             </notes>
@@ -11045,13 +10993,10 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_DEFAULT} mode.
             When operating in
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_DEFAULT} mode, sensors
-            with {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            capability would typically perform pixel binning in order to improve low light
+            would typically perform pixel binning in order to improve low light
             performance, noise reduction etc. However, in
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}
-            mode (supported only
-            by {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
-            sensors), sensors typically operate in unbinned mode allowing for a larger image size.
+            mode, sensors typically operate in unbinned mode allowing for a larger image size.
             The stream configurations supported in
             {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}
             mode are also different from those of
@@ -11066,6 +11011,25 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             must not be mixed in the same CaptureRequest. In other words, these outputs are
             exclusive to each other.
             This key does not need to be set for reprocess requests.
+            This key will be be present on devices supporting the
+            {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
+            capability. It may also be present on devices which do not support the aforementioned
+            capability. In that case:
+
+            * The mandatory stream combinations listed in
+              {@link android.hardware.camera2.CameraCharacteristics.mandatoryMaximumResolutionStreamCombinations}
+              would not apply.
+
+            * The bayer pattern of {@code RAW} streams when
+              {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}
+              is selected will be the one listed in {@link android.sensor.info.binningFactor}.
+
+            * The following keys will always be present:
+
+                * android.scaler.streamConfigurationMapMaximumResolution
+                * android.sensor.info.activeArraySizeMaximumResolution
+                * android.sensor.info.pixelArraySizeMaximumResolution
+                * android.sensor.info.preCorrectionActiveArraySizeMaximumResolution
           </details>
         </entry>
       </controls>
