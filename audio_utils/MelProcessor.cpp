@@ -16,6 +16,12 @@
 
 // #define LOG_NDEBUG 0
 #define LOG_TAG "audio_utils_MelProcessor"
+// #define VERY_VERY_VERBOSE_LOGGING
+#ifdef VERY_VERY_VERBOSE_LOGGING
+#define ALOGVV ALOGV
+#else
+#define ALOGVV(a...) do { } while(0)
+#endif
 
 #include <audio_utils/MelProcessor.h>
 
@@ -36,8 +42,8 @@ constexpr float kMeldBFSTodBSPLOffset = 110.f;
 
 constexpr float kRs1OutputdBFS = 80.f;  // dBA
 
-constexpr float kRs2LowerLimit = 80.f;  // dBA
-constexpr float kRs2UpperLimit = 100.f;  // dBA
+constexpr float kRs2LowerBound = 80.f;  // dBA
+constexpr float kRs2UpperBound = 100.f;  // dBA
 
 // The following arrays contain the IIR biquad filter coefficients for performing A-weighting as
 // described in IEC 61672:2003 for samples with 44.1kHz and 48kHz.
@@ -70,7 +76,7 @@ MelProcessor::MelProcessor(uint32_t sampleRate,
       mMelValues(maxMelsCallback),
       mCurrentIndex(0),
       mDeviceId(deviceId),
-      mRs2Value(rs2Value),
+      mRs2UpperBound(rs2Value),
       mCurrentSamples(0)
 {
     createBiquads_l();
@@ -99,20 +105,20 @@ void MelProcessor::createBiquads_l() {
                std::make_unique<DefaultBiquadFilter>(mChannelCount, kBiquadCoefs3.at(coefsIndex))};
 }
 
-status_t MelProcessor::setOutputRs2(float rs2Value)
+status_t MelProcessor::setOutputRs2UpperBound(float rs2Value)
 {
-    if (rs2Value < kRs2LowerLimit || rs2Value > kRs2UpperLimit) {
+    if (rs2Value < kRs2LowerBound || rs2Value > kRs2UpperBound) {
         return BAD_VALUE;
     }
 
-    mRs2Value = rs2Value;
+    mRs2UpperBound = rs2Value;
 
     return NO_ERROR;
 }
 
-float MelProcessor::getOutputRs2() const
+float MelProcessor::getOutputRs2UpperBound() const
 {
-    return mRs2Value;
+    return mRs2UpperBound;
 }
 
 void MelProcessor::setDeviceId(audio_port_handle_t deviceId)
@@ -122,6 +128,18 @@ void MelProcessor::setDeviceId(audio_port_handle_t deviceId)
 
 audio_port_handle_t MelProcessor::getDeviceId() {
     return mDeviceId;
+}
+
+void MelProcessor::pause()
+{
+    ALOGV("%s", __func__);
+    mPaused = true;
+}
+
+void MelProcessor::resume()
+{
+    ALOGV("%s", __func__);
+    mPaused = false;
 }
 
 void MelProcessor::updateAudioFormat(uint32_t sampleRate,
@@ -190,7 +208,7 @@ void MelProcessor::addMelValue_l(float mel) {
 
     bool notifyWorker = false;
 
-    if (mel > mRs2Value) {
+    if (mel > mRs2UpperBound) {
         mMelWorker.momentaryExposure(mel, mDeviceId);
         notifyWorker = true;
     }
@@ -215,6 +233,10 @@ void MelProcessor::addMelValue_l(float mel) {
 }
 
 int32_t MelProcessor::process(const void* buffer, size_t bytes) {
+    if (mPaused) {
+        return 0;
+    }
+
     // should be uncontested and not block if process method is called from a single thread
     std::lock_guard<std::mutex> guard(mLock);
 
@@ -239,7 +261,7 @@ int32_t MelProcessor::process(const void* buffer, size_t bytes) {
                                       mCurrentChannelEnergy.data());
         mCurrentSamples += processSamples;
 
-        ALOGV(
+        ALOGVV(
             "required:%zu, process:%zu, mCurrentChannelEnergy[0]:%f, mCurrentSamples:%zu",
             requiredSamples,
             processSamples,
