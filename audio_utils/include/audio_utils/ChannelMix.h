@@ -235,6 +235,201 @@ constexpr bool fillChannelMatrix(audio_channel_mask_t INPUT_CHANNEL_MASK,
             tmp ^= lowestBit;
         }
         return true;
+    } else if constexpr (OUTPUT_CHANNEL_MASK == AUDIO_CHANNEL_OUT_7POINT1) {
+        //   FL  FR  FC  LFE  BL  BR  SL  SR
+        size_t index = 0;
+        constexpr float MINUS_3_DB_IN_FLOAT = M_SQRT1_2; // -3dB = 0.70710678
+        constexpr float MINUS_4_5_DB_IN_FLOAT = 0.5946035575f;
+
+        constexpr size_t FL = 0;
+        constexpr size_t FR = 1;
+        constexpr size_t FC = 2;
+        constexpr size_t LFE = 3;
+        constexpr size_t BL = 4;
+        constexpr size_t BR = 5;
+        constexpr size_t SL = 6;
+        constexpr size_t SR = 7;
+        for (unsigned tmp = INPUT_CHANNEL_MASK; tmp != 0; ++index) {
+            if (index >= M) return false;
+            const unsigned lowestBit = tmp & -(signed)tmp;
+            matrix[index][FL] = matrix[index][FR] = matrix[index][FC] = 0.f;
+            matrix[index][LFE] = matrix[index][BL] = matrix[index][BR] = 0.f;
+            switch (lowestBit) {
+                case AUDIO_CHANNEL_OUT_FRONT_LEFT:
+                case AUDIO_CHANNEL_OUT_TOP_FRONT_LEFT:
+                case AUDIO_CHANNEL_OUT_BOTTOM_FRONT_LEFT:
+                    matrix[index][FL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_FRONT_RIGHT:
+                case AUDIO_CHANNEL_OUT_TOP_FRONT_RIGHT:
+                case AUDIO_CHANNEL_OUT_BOTTOM_FRONT_RIGHT:
+                    matrix[index][FR] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_CENTER:
+                case AUDIO_CHANNEL_OUT_TOP_FRONT_CENTER:
+                case AUDIO_CHANNEL_OUT_BOTTOM_FRONT_CENTER:
+                    matrix[index][FC] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_WIDE_LEFT: // FRONT_WIDE closer to SIDE.
+                    matrix[index][FL] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][SL] = MINUS_3_DB_IN_FLOAT;
+                    break;
+                case AUDIO_CHANNEL_OUT_FRONT_WIDE_RIGHT: // FRONT_WIDE closer to SIDE.
+                    matrix[index][FR] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][SR] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_LEFT_OF_CENTER:
+                    matrix[index][FL] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][FC] = MINUS_3_DB_IN_FLOAT;
+                    break;
+                case AUDIO_CHANNEL_OUT_FRONT_RIGHT_OF_CENTER:
+                    matrix[index][FR] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][FC] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_BACK_LEFT:
+                case AUDIO_CHANNEL_OUT_TOP_BACK_LEFT:
+                    matrix[index][BL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_BACK_RIGHT:
+                case AUDIO_CHANNEL_OUT_TOP_BACK_RIGHT:
+                    matrix[index][BR] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_SIDE_LEFT:
+                case AUDIO_CHANNEL_OUT_TOP_SIDE_LEFT:
+                    matrix[index][SL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_SIDE_RIGHT:
+                case AUDIO_CHANNEL_OUT_TOP_SIDE_RIGHT:
+                    matrix[index][SR] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_TOP_BACK_CENTER:
+                case AUDIO_CHANNEL_OUT_BACK_CENTER:
+                    matrix[index][BL] = matrix[index][BR] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_TOP_CENTER:
+                    matrix[index][FC] = matrix[index][BL] = matrix[index][BR] = 0.5f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_LOW_FREQUENCY:
+                case AUDIO_CHANNEL_OUT_LOW_FREQUENCY_2:
+                    matrix[index][LFE] = 1.f;
+                    break;
+            }
+            tmp ^= lowestBit;
+        }
+        return true;
+    } else if constexpr (OUTPUT_CHANNEL_MASK == AUDIO_CHANNEL_OUT_7POINT1POINT4) {
+        //   FL  FR  FC  LFE  BL  BR  SL  SR  TFL  TFR  TBL  TBR
+        size_t index = 0;
+        constexpr float MINUS_3_DB_IN_FLOAT = M_SQRT1_2; // -3dB = 0.70710678
+        constexpr float MINUS_4_5_DB_IN_FLOAT = 0.5946035575f;
+
+        constexpr size_t FL = 0;
+        constexpr size_t FR = 1;
+        constexpr size_t FC = 2;
+        constexpr size_t LFE = 3;
+        constexpr size_t BL = 4;
+        constexpr size_t BR = 5;
+        constexpr size_t SL = 6;
+        constexpr size_t SR = 7;
+        constexpr size_t TFL = 8;
+        constexpr size_t TFR = 9;
+        constexpr size_t TBL = 10;
+        constexpr size_t TBR = 11;
+        for (unsigned tmp = INPUT_CHANNEL_MASK; tmp != 0; ++index) {
+            if (index >= M) return false;
+            const unsigned lowestBit = tmp & -(signed)tmp;
+            matrix[index][FL] = matrix[index][FR] = matrix[index][FC] = 0.f;
+            matrix[index][LFE] = matrix[index][BL] = matrix[index][BR] = 0.f;
+            switch (lowestBit) {
+                case AUDIO_CHANNEL_OUT_TOP_FRONT_LEFT:
+                    matrix[index][TFL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_TOP_FRONT_RIGHT:
+                    matrix[index][TFR] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_TOP_FRONT_CENTER:
+                    matrix[index][TFL] = matrix[index][TFR] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_LEFT:
+                case AUDIO_CHANNEL_OUT_BOTTOM_FRONT_LEFT:
+                    matrix[index][FL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_FRONT_RIGHT:
+                case AUDIO_CHANNEL_OUT_BOTTOM_FRONT_RIGHT:
+                    matrix[index][FR] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_CENTER:
+                case AUDIO_CHANNEL_OUT_BOTTOM_FRONT_CENTER:
+                    matrix[index][FC] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_WIDE_LEFT: // FRONT_WIDE closer to SIDE.
+                    matrix[index][FL] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][SL] = MINUS_3_DB_IN_FLOAT;
+                    break;
+                case AUDIO_CHANNEL_OUT_FRONT_WIDE_RIGHT: // FRONT_WIDE closer to SIDE.
+                    matrix[index][FR] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][SR] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_FRONT_LEFT_OF_CENTER:
+                    matrix[index][FL] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][FC] = MINUS_3_DB_IN_FLOAT;
+                    break;
+                case AUDIO_CHANNEL_OUT_FRONT_RIGHT_OF_CENTER:
+                    matrix[index][FR] = MINUS_4_5_DB_IN_FLOAT;
+                    matrix[index][FC] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_BACK_LEFT:
+                case AUDIO_CHANNEL_OUT_TOP_BACK_LEFT:
+                    matrix[index][BL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_BACK_RIGHT:
+                case AUDIO_CHANNEL_OUT_TOP_BACK_RIGHT:
+                    matrix[index][BR] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_SIDE_LEFT:
+                case AUDIO_CHANNEL_OUT_TOP_SIDE_LEFT:
+                    matrix[index][SL] = 1.f;
+                    break;
+                case AUDIO_CHANNEL_OUT_SIDE_RIGHT:
+                case AUDIO_CHANNEL_OUT_TOP_SIDE_RIGHT:
+                    matrix[index][SR] = 1.f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_TOP_BACK_CENTER:
+                    matrix[index][TBL] = matrix[index][TBR] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_BACK_CENTER:
+                    matrix[index][BL] = matrix[index][BR] = MINUS_3_DB_IN_FLOAT;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_TOP_CENTER:
+                    matrix[index][TFL] = matrix[index][TFR] = 0.5f;
+                    matrix[index][TBL] = matrix[index][TBR] = 0.5f;
+                    break;
+
+                case AUDIO_CHANNEL_OUT_LOW_FREQUENCY:
+                case AUDIO_CHANNEL_OUT_LOW_FREQUENCY_2:
+                    matrix[index][LFE] = 1.f;
+                    break;
+            }
+            tmp ^= lowestBit;
+        }
+        return true;
     } else /* constexpr */ {
         // We only accept NONE here as we don't do anything in that case.
         static_assert(OUTPUT_CHANNEL_MASK==AUDIO_CHANNEL_NONE);
@@ -243,6 +438,60 @@ constexpr bool fillChannelMatrix(audio_channel_mask_t INPUT_CHANNEL_MASK,
     return false;
 }
 
+class IChannelMix {
+public:
+    virtual ~IChannelMix() = default;
+
+    /**
+     * Set the input channel mask.
+     *
+     * \param inputChannelMask channel position mask for input data.
+     *
+     * \return false if the channel mask is not supported.
+     */
+    virtual bool setInputChannelMask(audio_channel_mask_t inputChannelMask) = 0;
+
+    /**
+     * Returns the input channel mask.
+     */
+    virtual audio_channel_mask_t getInputChannelMask() const = 0;
+
+    /**
+     * Remixes audio data in src to dst.
+     *
+     * \param src          input audio buffer to remix
+     * \param dst          remixed audio samples
+     * \param frameCount   number of frames to remix
+     * \param accumulate   is true if the remix is added to the destination or
+     *                     false if the remix replaces the destination.
+     *
+     * \return false if the channel mask set is not supported.
+     */
+    virtual bool process(
+            const float *src, float *dst, size_t frameCount, bool accumulate) const = 0;
+
+    /**
+     * Remixes audio data in src to dst.
+     *
+     * \param src          input audio buffer to remix
+     * \param dst          remixed audio samples
+     * \param frameCount   number of frames to remix
+     * \param accumulate   is true if the remix is added to the destination or
+     *                     false if the remix replaces the destination.
+     * \param inputChannelMask channel position mask for input data.
+     *
+     * \return false if the channel mask set is not supported.
+     */
+    virtual bool process(const float *src, float *dst, size_t frameCount, bool accumulate,
+            audio_channel_mask_t inputChannelMask) = 0;
+
+    /** Built in ChannelMix factory. */
+    static std::shared_ptr<IChannelMix> create(audio_channel_mask_t outputChannelMask);
+
+    /** Returns true if the Built-in factory supports the outputChannelMask */
+    static bool isOutputChannelMaskSupported(audio_channel_mask_t outputChannelMask);
+};
+
 /**
  * ChannelMix
  *
@@ -250,9 +499,8 @@ constexpr bool fillChannelMatrix(audio_channel_mask_t INPUT_CHANNEL_MASK,
  *
  */
 template <audio_channel_mask_t OUTPUT_CHANNEL_MASK>
-class ChannelMix {
+class ChannelMix : public IChannelMix {
 public:
-
     /**
      * Creates a ChannelMix object
      *
@@ -267,14 +515,7 @@ public:
 
     ChannelMix() = default;
 
-    /**
-     * Set the input channel mask.
-     *
-     * \param inputChannelMask channel position mask for input data.
-     *
-     * \return false if the channel mask is not supported.
-     */
-    bool setInputChannelMask(audio_channel_mask_t inputChannelMask) {
+    bool setInputChannelMask(audio_channel_mask_t inputChannelMask) override {
         if (mInputChannelMask != inputChannelMask) {
             if (inputChannelMask & ~((1 << MAX_INPUT_CHANNELS_SUPPORTED) - 1)) {
                 return false;  // not channel position mask, or has unknown channels.
@@ -288,43 +529,18 @@ public:
         return true;
     }
 
-    /**
-     * Returns the input channel mask.
-     */
-    audio_channel_mask_t getInputChannelMask() const {
+    audio_channel_mask_t getInputChannelMask() const override {
         return mInputChannelMask;
     }
 
-    /**
-     * Remixes audio data in src to dst.
-     *
-     * \param src          input audio buffer to remix
-     * \param dst          remixed audio samples
-     * \param frameCount   number of frames to remix
-     * \param accumulate   is true if the remix is added to the destination or
-     *                     false if the remix replaces the destination.
-     *
-     * \return false if the channel mask set is not supported.
-     */
-    bool process(const float *src, float *dst, size_t frameCount, bool accumulate) const {
+    bool process(const float *src, float *dst, size_t frameCount,
+            bool accumulate) const override {
         return accumulate ? processSwitch<true>(src, dst, frameCount)
                 : processSwitch<false>(src, dst, frameCount);
     }
 
-    /**
-     * Remixes audio data in src to dst.
-     *
-     * \param src          input audio buffer to remix
-     * \param dst          remixed audio samples
-     * \param frameCount   number of frames to remix
-     * \param accumulate   is true if the remix is added to the destination or
-     *                     false if the remix replaces the destination.
-     * \param inputChannelMask channel position mask for input data.
-     *
-     * \return false if the channel mask set is not supported.
-     */
-    bool process(const float *src, float *dst, size_t frameCount, bool accumulate,
-            audio_channel_mask_t inputChannelMask) {
+    bool process(const float *src, float *dst, size_t frameCount,
+            bool accumulate, audio_channel_mask_t inputChannelMask) override {
         return setInputChannelMask(inputChannelMask) && process(src, dst, frameCount, accumulate);
     }
 
@@ -380,7 +596,42 @@ private:
                 case AUDIO_CHANNEL_OUT_5POINT1POINT2:
                     return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_5POINT1POINT2,
                             OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
-                 case AUDIO_CHANNEL_OUT_5POINT1POINT4:
+                case AUDIO_CHANNEL_OUT_5POINT1POINT4:
+                     return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_5POINT1POINT4,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_7POINT1:
+                     return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_7POINT1,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_7POINT1POINT2:
+                    return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_7POINT1POINT2,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_7POINT1POINT4:
+                     return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_7POINT1POINT4,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_22POINT2:
+                     return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_22POINT2,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                default:
+                    break; // handled below.
+                }
+            } else if constexpr (OUTPUT_CHANNEL_MASK == AUDIO_CHANNEL_OUT_7POINT1
+                    || OUTPUT_CHANNEL_MASK == AUDIO_CHANNEL_OUT_7POINT1POINT4) {
+                switch (mInputChannelMask) {
+                case AUDIO_CHANNEL_OUT_STEREO:
+                    return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_STEREO,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_QUAD_BACK:
+                // Note: case AUDIO_CHANNEL_OUT_QUAD_SIDE is not equivalent.
+                    return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_QUAD_BACK,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_5POINT1_BACK:
+                // Note: case AUDIO_CHANNEL_OUT_5POINT1_SIDE is not equivalent.
+                    return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_5POINT1_BACK,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_5POINT1POINT2:
+                    return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_5POINT1POINT2,
+                            OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
+                case AUDIO_CHANNEL_OUT_5POINT1POINT4:
                      return sparseChannelMatrixMultiply<AUDIO_CHANNEL_OUT_5POINT1POINT4,
                             OUTPUT_CHANNEL_MASK, ACCUMULATE>(src, dst, frameCount);
                 case AUDIO_CHANNEL_OUT_7POINT1:
