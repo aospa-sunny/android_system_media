@@ -332,7 +332,8 @@ static inline CONSTEXPR audio_channel_mask_t audio_channel_mask_from_representat
 }
 
 /*
- * Returns true so long as Quadraphonic channels (FL, FR, BL, BR) are completely specified
+ * Returns true so long as Quadraphonic channels (FL, FR, BL, BR)
+ * or (FL, FR, SL, SR) are completely specified
  * in the channel mask. We expect these 4 channels to be the minimum for
  * reasonable spatializer effect quality.
  *
@@ -350,7 +351,8 @@ static inline CONSTEXPR audio_channel_mask_t audio_channel_mask_from_representat
 static inline CONSTEXPR bool audio_is_channel_mask_spatialized(audio_channel_mask_t channelMask) {
     return audio_channel_mask_get_representation(channelMask)
                 == AUDIO_CHANNEL_REPRESENTATION_POSITION
-            && (channelMask & AUDIO_CHANNEL_OUT_QUAD) == AUDIO_CHANNEL_OUT_QUAD;
+            && ((channelMask & AUDIO_CHANNEL_OUT_QUAD) == AUDIO_CHANNEL_OUT_QUAD
+                || (channelMask & AUDIO_CHANNEL_OUT_QUAD_SIDE) == AUDIO_CHANNEL_OUT_QUAD_SIDE);
 }
 
 /*
@@ -2315,13 +2317,24 @@ __END_DECLS
 
 #define AUDIO_PARAMETER_VALUE_ON "on"
 #define AUDIO_PARAMETER_VALUE_OFF "off"
+#define AUDIO_PARAMETER_VALUE_TRUE "true"
+#define AUDIO_PARAMETER_VALUE_FALSE "false"
 
 /**
  *  audio device parameters
  */
 
+/* Used to enable or disable BT SCO */
+#define AUDIO_PARAMETER_KEY_BT_SCO "BT_SCO"
+
 /* BT SCO Noise Reduction + Echo Cancellation parameters */
 #define AUDIO_PARAMETER_KEY_BT_NREC "bt_headset_nrec"
+
+/* Used to enable or disable BT A2DP */
+#define AUDIO_PARAMETER_KEY_BT_A2DP_SUSPENDED "A2dpSuspended"
+
+/* Used to enable or disable BT LE */
+#define AUDIO_PARAMETER_KEY_BT_LE_SUSPENDED "LeAudioSuspended"
 
 /* Get a new HW synchronization source identifier.
  * Return a valid source (positive integer) or AUDIO_HW_SYNC_INVALID if an error occurs
@@ -2334,6 +2347,18 @@ __END_DECLS
 /* User's preferred audio language setting (in ISO 639-2/T three-letter string code)
  * used to select a specific language presentation for next generation audio codecs. */
 #define AUDIO_PARAMETER_KEY_AUDIO_LANGUAGE_PREFERRED "audio_language_preferred"
+
+/* Set to "true" when the AudioOutputDescriptor is closing.
+ * This notification is used by A2DP HAL.
+ * TODO(b/73175392) unify with exiting in the AIDL interface.
+ */
+#define AUDIO_PARAMETER_KEY_CLOSING "closing"
+
+/* Set to "1" on AudioFlinger preExit() for the thread.
+ * This notification is used by the remote submix and A2DP HAL.
+ * TODO(b/73175392) unify with closing in the AIDL interface.
+ */
+#define AUDIO_PARAMETER_KEY_EXITING "exiting"
 
 /**
  *  audio stream parameters
